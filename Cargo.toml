@@ -11,7 +11,6 @@ repository = "https://gitlab.com/nathanfaucett/rs-polygon2.git"
 homepage = "https://gitlab.com/nathanfaucett/rs-polygon2"
 
 [dependencies]
-vec2 = { version = "0.1" }
 number_traits = { version = "0.2" }
 
 [dev-dependencies]

@@ -2,7 +2,7 @@ use alloc::vec::Vec;
 
 use number_traits::Num;
 
-use super::{point_in_triangle, is_convex};
+use super::{point_in_triangle, is_triangle_convex};
 
 
 #[inline]
@@ -33,7 +33,7 @@ pub fn triangulate<T>(points: &[[T; 2]]) -> Vec<usize>
 			let c = &points[i2];
 
             let mut ear_found = false;
-            if is_convex(a, b, c) {
+            if is_triangle_convex(a, b, c) {
                 ear_found = true;
 
                 for j in 0..al {
@@ -72,6 +72,7 @@ pub fn triangulate<T>(points: &[[T; 2]]) -> Vec<usize>
 
 #[test]
 fn test_triangulate() {
-    let tgs = triangulate(&[[1, -1], [1, 1], [-1, 1], [-1, -1]]);
+    let points = [[1, -1], [1, 1], [-1, 1], [-1, -1]];
+    let tgs = triangulate(&points);
     assert_eq!(tgs, [0, 1, 2, 0, 2, 3]);
 }

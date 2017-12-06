@@ -4,25 +4,25 @@ use super::in_rect;
 
 
 #[inline]
-pub fn line_intersection<T>(a0: &[T; 2], a1: &[T; 2], b0: &[T; 2], b1: &[T; 2], out: &mut [T; 2]) -> bool
+pub fn line_intersection<T>(a1: &[T; 2], a2: &[T; 2], b1: &[T; 2], b2: &[T; 2], out: &mut [T; 2]) -> bool
     where T: Copy + Num,
 {
-    let dax = a0[0] - a1[0];
-    let dbx = b0[0] - b1[0];
-    let day = a0[1] - a1[1];
-    let dby = b0[1] - b1[1];
+    let dax = a1[0] - a2[0];
+    let dbx = b1[0] - b2[0];
+    let day = a1[1] - a2[1];
+    let dby = b1[1] - b2[1];
 
-    let den = dax * dby - day * dbx;
-    if den == T::zero() { // parallel
+    let d = dax * dby - day * dbx;
+    if d == T::zero() { // parallel
         false
     } else {
-        let a = a0[0] * a1[1] - a0[1] * a1[0];
-        let b = b0[0] * b1[1] - b0[1] * b1[0];
+        let ad = a1[0] * a2[1] - a1[1] * a2[0];
+        let bd = b1[0] * b2[1] - b1[1] * b2[0];
 
-        out[0] = (a * dbx - dax * b) / den;
-        out[1] = (a * dby - day * b) / den;
+        out[0] = (ad * dbx - dax * bd) / d;
+        out[1] = (ad * dby - day * bd) / d;
 
-        if in_rect(out, a0, a1) && in_rect(out, b0, b1) {
+        if in_rect(out, a1, a2) && in_rect(out, b1, b2) {
             true
         } else {
             false
@@ -35,4 +35,7 @@ fn test_line_intersection() {
     let mut out = [0.0, 0.0];
     assert!(line_intersection(&[0.0, 0.0], &[1.0, 1.0], &[1.0, 0.0], &[0.0, 1.0], &mut out));
     assert_eq!(out, [0.5, 0.5]);
+
+    assert!(!line_intersection(&[1.0, 0.0], &[1.0, 1.0], &[-1.0, 0.0], &[-1.0, 1.0], &mut [0.0, 0.0]));
+    assert!(!line_intersection(&[0.0, 0.0], &[1.0, 1.0], &[2.0, 0.0], &[2.0, 1.0], &mut [0.0, 0.0]));
 }

@@ -1,9 +1,9 @@
-use number_traits::{Signed, Num};
+use number_traits::Signed;
 
 
 #[inline]
 pub fn contains_point<T>(p: &[T; 2], points: &[[T; 2]]) -> bool
-    where T: Copy + Num + Signed,
+    where T: Copy + Signed,
 {
     let n = points.len();
     let px = p[0];
