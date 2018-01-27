@@ -1,9 +1,9 @@
 use number_traits::Signed;
 
-
 #[inline]
 pub fn contains_point<T>(p: &[T; 2], points: &[[T; 2]]) -> bool
-    where T: Copy + Signed,
+where
+    T: Copy + Signed,
 {
     let n = points.len();
     let px = p[0];
@@ -16,19 +16,19 @@ pub fn contains_point<T>(p: &[T; 2], points: &[[T; 2]]) -> bool
     let mut bx = b[0] - px;
     let mut by = b[1] - py;
 
-	let mut lup = by > ay;
-	for i in 0..n {
-		// ax = bx;
+    let mut lup = by > ay;
+    for i in 0..n {
+        // ax = bx;
         ay = by;
         b = points[i];
-		bx = b[0] - px;
-		by = b[1] - py;
+        bx = b[0] - px;
+        by = b[1] - py;
 
-		if ay == by {
+        if ay == by {
             continue;
         }
-		lup = by > ay;
-	}
+        lup = by > ay;
+    }
 
     let mut depth = 0;
     for i in 0..n {
@@ -38,13 +38,16 @@ pub fn contains_point<T>(p: &[T; 2], points: &[[T; 2]]) -> bool
         bx = b[0] - px;
         by = b[1] - py;
 
-        if ay < T::zero() && by < T::zero() { // both "up" or both "down"
+        if ay < T::zero() && by < T::zero() {
+            // both "up" or both "down"
             continue;
         }
-        if ay > T::zero() && by > T::zero() { // both "up" or both "down"
+        if ay > T::zero() && by > T::zero() {
+            // both "up" or both "down"
             continue;
         }
-        if ax < T::zero() && bx < T::zero() { // both points on the left
+        if ax < T::zero() && bx < T::zero() {
+            // both points on the left
             continue;
         }
 
@@ -56,16 +59,19 @@ pub fn contains_point<T>(p: &[T; 2], points: &[[T; 2]]) -> bool
         }
 
         let lx = ax + (bx - ax) * (-ay) / (by - ay);
-        if lx == T::zero() { // point on edge
+        if lx == T::zero() {
+            // point on edge
             return true;
         }
         if lx > T::zero() {
             depth += 1;
         }
-        if ay == T::zero() &&  lup && by > ay { // hit vertex, both up
+        if ay == T::zero() && lup && by > ay {
+            // hit vertex, both up
             depth -= 1;
         }
-        if ay == T::zero() && !lup && by<ay { // hit vertex, both down
+        if ay == T::zero() && !lup && by < ay {
+            // hit vertex, both down
             depth -= 1;
         }
 
@@ -74,7 +80,6 @@ pub fn contains_point<T>(p: &[T; 2], points: &[[T; 2]]) -> bool
 
     return (depth & 1) == 1;
 }
-
 
 #[test]
 fn test_contains_point() {

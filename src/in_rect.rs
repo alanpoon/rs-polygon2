@@ -1,9 +1,9 @@
 use number_traits::Num;
 
-
 #[inline]
 pub fn in_rect<T>(p: &[T; 2], a: &[T; 2], b: &[T; 2]) -> bool
-    where T: Copy + Num,
+where
+    T: Copy + Num,
 {
     let minx = a[0].min(&b[0]);
     let maxx = a[0].max(&b[0]);
@@ -18,7 +18,6 @@ pub fn in_rect<T>(p: &[T; 2], a: &[T; 2], b: &[T; 2]) -> bool
         (minx < p[0] && p[0] < maxx && miny < p[1] && p[1] < maxy)
     }
 }
-
 
 #[test]
 fn test_in_rect() {

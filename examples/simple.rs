@@ -1,9 +1,3 @@
-polygon2
-=====
-
-polygon 2d functions
-
-```rust
 extern crate polygon2;
 
 use polygon2::{area, closest_edge, contains_point, is_convex, is_simple, triangulate};
@@ -24,5 +18,3 @@ fn main() {
     assert_eq!(closest_edge(&[-1.0, 0.0], &points).edge, 2);
     assert_eq!(closest_edge(&[0.0, -1.0], &points).edge, 3);
 }
-
-```

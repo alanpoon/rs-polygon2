@@ -2,10 +2,10 @@ use number_traits::Num;
 
 use super::line_intersection;
 
-
 #[inline]
 pub fn is_simple<T>(points: &[[T; 2]]) -> bool
-    where T: Copy + Num + ::core::fmt::Debug,
+where
+    T: Copy + Num + ::core::fmt::Debug,
 {
     let n = points.len();
 
@@ -21,7 +21,11 @@ pub fn is_simple<T>(points: &[[T; 2]]) -> bool
 
         for i in 0..n {
             let pa1 = &points[i];
-            let pa2 = if i == n_minus_1 { &points[0] } else { &points[i + 1] };
+            let pa2 = if i == n_minus_1 {
+                &points[0]
+            } else {
+                &points[i + 1]
+            };
 
             a1[0] = pa1[0];
             a1[1] = pa1[1];
@@ -29,22 +33,24 @@ pub fn is_simple<T>(points: &[[T; 2]]) -> bool
             a2[1] = pa2[1];
 
             for j in 0..n {
-                if Num::abs_diff(&i, &j) < 2 ||
-                   j == n_minus_1 && i == 0 ||
-                   i == n_minus_1 && j == 0
+                if Num::abs_diff(&i, &j) < 2 || j == n_minus_1 && i == 0 || i == n_minus_1 && j == 0
                 {
                     continue;
                 }
 
                 let pb1 = &points[j];
-                let pb2 = if j == n_minus_1 { &points[0] } else { &points[j + 1] };
+                let pb2 = if j == n_minus_1 {
+                    &points[0]
+                } else {
+                    &points[j + 1]
+                };
 
                 b1[0] = pb1[0];
                 b1[1] = pb1[1];
                 b2[0] = pb2[0];
                 b2[1] = pb2[1];
 
-				if line_intersection(&a1, &a2, &b1, &b2, &mut c) {
+                if line_intersection(&a1, &a2, &b1, &b2, &mut c) {
                     return false;
                 }
             }

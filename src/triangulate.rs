@@ -2,12 +2,12 @@ use alloc::vec::Vec;
 
 use number_traits::Num;
 
-use super::{point_in_triangle, is_triangle_convex};
-
+use super::{is_triangle_convex, point_in_triangle};
 
 #[inline]
 pub fn triangulate<T>(points: &[[T; 2]]) -> Vec<usize>
-    where T: Copy + Num,
+where
+    T: Copy + Num,
 {
     let len = points.len();
     let mut tgs = Vec::new();
@@ -25,12 +25,12 @@ pub fn triangulate<T>(points: &[[T; 2]]) -> Vec<usize>
         let mut al = len;
         while al > 3 {
             let i0 = avl[i % al];
-			let i1 = avl[(i + 1) % al];
-			let i2 = avl[(i + 2) % al];
+            let i1 = avl[(i + 1) % al];
+            let i2 = avl[(i + 2) % al];
 
-			let a = &points[i0];
-			let b = &points[i1];
-			let c = &points[i2];
+            let a = &points[i0];
+            let b = &points[i1];
+            let c = &points[i2];
 
             let mut ear_found = false;
             if is_triangle_convex(a, b, c) {
@@ -39,7 +39,7 @@ pub fn triangulate<T>(points: &[[T; 2]]) -> Vec<usize>
                 for j in 0..al {
                     let vi = avl[j];
 
-					if vi != i0 && vi != i1 && vi != i2 {
+                    if vi != i0 && vi != i1 && vi != i2 {
                         if point_in_triangle(&points[vi], a, b, c) {
                             ear_found = false;
                             break;
@@ -52,9 +52,9 @@ pub fn triangulate<T>(points: &[[T; 2]]) -> Vec<usize>
                 tgs.push(i0);
                 tgs.push(i1);
                 tgs.push(i2);
-				avl.remove((i + 1) % al);
-				al -= 1;
-				i = 0;
+                avl.remove((i + 1) % al);
+                al -= 1;
+                i = 0;
             } else if i > 3 * al {
                 break;
             } else {

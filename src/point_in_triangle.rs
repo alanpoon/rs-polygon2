@@ -1,9 +1,9 @@
 use number_traits::Num;
 
-
 #[inline]
 pub fn point_in_triangle<T>(p: &[T; 2], a: &[T; 2], b: &[T; 2], c: &[T; 2]) -> bool
-    where T: Copy + Num,
+where
+    T: Copy + Num,
 {
     let v0x = c[0] - a[0];
     let v0y = c[1] - a[1];
@@ -30,6 +30,16 @@ fn test_point_in_triangle() {
     assert!(point_in_triangle(&[0, 5], &[0, 10], &[-10, 0], &[10, 0]));
     assert!(!point_in_triangle(&[0, -10], &[0, 10], &[-10, 0], &[10, 0]));
 
-    assert!(point_in_triangle(&[0.0, 0.5], &[0.0, 1.0], &[-1.0, 0.0], &[1.0, 0.0]));
-    assert!(!point_in_triangle(&[0.0, -1.0], &[0.0, 1.0], &[-1.0, 0.0], &[1.0, 0.0]));
+    assert!(point_in_triangle(
+        &[0.0, 0.5],
+        &[0.0, 1.0],
+        &[-1.0, 0.0],
+        &[1.0, 0.0]
+    ));
+    assert!(!point_in_triangle(
+        &[0.0, -1.0],
+        &[0.0, 1.0],
+        &[-1.0, 0.0],
+        &[1.0, 0.0]
+    ));
 }

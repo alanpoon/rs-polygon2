@@ -1,11 +1,10 @@
 #![feature(alloc)]
 #![no_std]
 
-
 extern crate alloc;
 
 extern crate number_traits;
-
+extern crate vec2;
 
 mod area;
 mod closest_edge;
@@ -19,9 +18,8 @@ mod point_in_triangle;
 mod point_to_line_distance;
 mod triangulate;
 
-
 pub use self::area::area;
-pub use self::closest_edge::closest_edge;
+pub use self::closest_edge::{closest_edge, closest_edge_offset_angle};
 pub use self::contains_point::contains_point;
 pub use self::in_rect::in_rect;
 pub use self::intersection::Intersection;
