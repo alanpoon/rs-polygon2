@@ -83,6 +83,7 @@ where
     let n_minus_1 = n - 1;
     let px = p[0];
     let py = p[1];
+
     let mut b1 = [T::zero(); 2];
     let mut b2 = [T::zero(); 2];
 
@@ -112,7 +113,7 @@ where
 
         point_to_line_intersection(p, &b1, &b2, i, &mut intersection);
 
-        i += 2;
+        i += 1;
     }
 
     if intersection.distance != T::zero() {
@@ -130,9 +131,27 @@ where
 fn test_closest_edge_offset_angle() {
     let points = [[0.5, -0.5], [0.5, 0.5], [-0.5, 0.5], [-0.5, -0.5]];
 
-    let intersection = closest_edge_offset_angle(&[0.0, 0.0], &[0.5, 0.5], 0.0, &points);
+    let intersection = closest_edge_offset_angle(&[1.5, 0.5], &[0.5, 0.5], 0.0, &points);
     assert_eq!(
         intersection,
-        Intersection::from((2, 0.0, [0.0, 0.0], [0.0, 1.0]))
+        Intersection::from((0, 0.5, [1.0, 0.5], [1.0, 0.0]))
+    );
+
+    let intersection = closest_edge_offset_angle(&[0.5, 1.5], &[0.5, 0.5], 0.0, &points);
+    assert_eq!(
+        intersection,
+        Intersection::from((1, 0.5, [0.5, 1.0], [0.0, 1.0]))
+    );
+
+    let intersection = closest_edge_offset_angle(&[-0.5, 0.5], &[0.5, 0.5], 0.0, &points);
+    assert_eq!(
+        intersection,
+        Intersection::from((2, 0.5, [0.0, 0.5], [-1.0, 0.0]))
+    );
+
+    let intersection = closest_edge_offset_angle(&[0.5, -0.5], &[0.5, 0.5], 0.0, &points);
+    assert_eq!(
+        intersection,
+        Intersection::from((3, 0.5, [0.5, 0.0], [0.0, -1.0]))
     );
 }

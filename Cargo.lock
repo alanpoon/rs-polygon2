@@ -13,7 +13,7 @@ dependencies = [
 
 [[package]]
 name = "polygon2"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "number_traits 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "vec2 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
