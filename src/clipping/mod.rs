@@ -1,4 +1,4 @@
-pub(self) mod greiner_hormann;
+pub mod greiner_hormann;
 mod difference;
 mod intersection;
 mod union;

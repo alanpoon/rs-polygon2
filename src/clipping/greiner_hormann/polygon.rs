@@ -51,7 +51,7 @@ where
     T: Copy + Signed,
 {
     #[inline]
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             first: ptr::null_mut(),
         }
@@ -63,7 +63,7 @@ where
     }
 
     #[inline]
-    fn add(&mut self, vertex: *mut Vertex<T>) {
+    pub fn add(&mut self, vertex: *mut Vertex<T>) {
         if self.first.is_null() {
             self.first = vertex;
         } else {
@@ -81,7 +81,7 @@ where
 
     /// Insert and sort a vertex between a specified pair of vertices
     #[inline]
-    fn insert(&mut self, vertex: *mut Vertex<T>, start: *mut Vertex<T>, end: *mut Vertex<T>) {
+    pub fn insert(&mut self, vertex: *mut Vertex<T>, start: *mut Vertex<T>, end: *mut Vertex<T>) {
         unsafe {
             let mut current = start;
 
@@ -114,7 +114,7 @@ where
 
     /// Return the first unchecked intersection point in the polygon
     #[inline]
-    fn first_intersect(&self) -> *mut Vertex<T> {
+    pub fn first_intersect(&self) -> *mut Vertex<T> {
         let mut ve = ptr::null_mut();
 
         for v in self.iter() {
@@ -131,7 +131,7 @@ where
 
     /// Return the polygon points as a list of points, in counter clock wise order clear consecutive equals points
     #[inline]
-    fn points(&self) -> Vec<[T; 2]> {
+    pub fn points(&self) -> Vec<[T; 2]> {
         let mut polygon = Vec::new();
 
         for vertex in self.iter() {
@@ -146,7 +146,7 @@ where
         polygon
     }
     #[inline]
-    fn points_rev(&self) -> Vec<[T; 2]> {
+    pub fn points_rev(&self) -> Vec<[T; 2]> {
         let mut polygon = Vec::new();
 
         for vertex in self.iter().rev() {
@@ -163,7 +163,7 @@ where
 
     /// Check if an unchecked intersection remain in the polygon
     #[inline]
-    fn unprocessed(&self) -> bool {
+    pub fn unprocessed(&self) -> bool {
         for vertex in self.iter() {
             if unsafe { vertex.as_ref().unwrap().inter && !vertex.as_ref().unwrap().checked } {
                 return true;
@@ -174,7 +174,7 @@ where
     }
 
     #[inline]
-    fn phase_one(&mut self, polygon: &mut Polygon<T>) {
+    pub fn phase_one(&mut self, polygon: &mut Polygon<T>) {
         for s in self.iter() {
             unsafe {
                 if !s.as_ref().unwrap().inter {
@@ -213,7 +213,7 @@ where
     }
 
     #[inline]
-    fn phase_two(&mut self, polygon: &mut Polygon<T>, mut s_entry: bool, mut c_entry: bool) {
+    pub fn phase_two(&mut self, polygon: &mut Polygon<T>, mut s_entry: bool, mut c_entry: bool) {
         s_entry ^= unsafe { self.first.as_ref().unwrap().is_inside(polygon) };
 
         for s in self.iter() {
@@ -238,7 +238,7 @@ where
     }
 
     #[inline]
-    fn phase_three(&mut self, rev: bool) -> Vec<Vec<[T; 2]>> {
+    pub fn phase_three(&mut self, rev: bool) -> Vec<Vec<[T; 2]>> {
         let mut list = Vec::new();
 
         while self.unprocessed() {
@@ -294,7 +294,7 @@ where
     }
 
     #[inline]
-    fn clip(
+    pub fn clip(
         &mut self,
         polygon: &mut Polygon<T>,
         s_entry: bool,

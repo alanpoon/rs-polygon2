@@ -3,7 +3,7 @@ name = "polygon2"
 version = "0.2.0"
 authors = ["nathanfaucett <nathanfaucett@gmail.com>"]
 
-keywords = ["polygon2", "polygon", "2d"]
+keywords = ["polygon2", "polygon", "2d", "clipping"]
 description = "polygon 2d functions"
 license = "MIT"
 readme = "README.md"
