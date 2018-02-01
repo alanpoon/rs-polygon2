@@ -1,7 +1,7 @@
 use number_traits::Num;
 
 #[inline]
-pub fn in_rect<T>(p: &[T; 2], a: &[T; 2], b: &[T; 2]) -> bool
+pub fn point_in_rect<T>(p: &[T; 2], a: &[T; 2], b: &[T; 2]) -> bool
 where
     T: Copy + Num,
 {
@@ -20,7 +20,7 @@ where
 }
 
 #[test]
-fn test_in_rect() {
-    assert!(in_rect(&[5, 5], &[0, 0], &[10, 10]));
-    assert!(!in_rect(&[-1, -1], &[0, 0], &[10, 10]));
+fn test_point_in_rect() {
+    assert!(point_in_rect(&[5, 5], &[0, 0], &[10, 10]));
+    assert!(!point_in_rect(&[-1, -1], &[0, 0], &[10, 10]));
 }

@@ -1,7 +1,7 @@
 use number_traits::Signed;
 
 #[inline]
-pub fn contains_point<T>(p: &[T; 2], points: &[[T; 2]]) -> bool
+pub fn contains_point<T>(points: &[[T; 2]], p: &[T; 2]) -> bool
 where
     T: Copy + Signed,
 {
@@ -84,7 +84,7 @@ where
 #[test]
 fn test_contains_point() {
     let points = [[1, -1], [1, 1], [-1, 1], [-1, -1]];
-    assert!(contains_point(&[0, 0], &points));
-    assert!(contains_point(&[1, 0], &points));
-    assert!(!contains_point(&[2, 0], &points));
+    assert!(contains_point(&points, &[0, 0]));
+    assert!(contains_point(&points, &[1, 0]));
+    assert!(!contains_point(&points, &[2, 0]));
 }

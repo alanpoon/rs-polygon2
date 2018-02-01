@@ -1,14 +1,14 @@
 use number_traits::Num;
 
-use super::in_rect;
+use super::point_in_rect;
 
 #[inline]
 pub fn line_intersection<T>(
+    out: &mut [T; 2],
     a1: &[T; 2],
     a2: &[T; 2],
     b1: &[T; 2],
     b2: &[T; 2],
-    out: &mut [T; 2],
 ) -> bool
 where
     T: Copy + Num,
@@ -29,7 +29,7 @@ where
         out[0] = (ad * dbx - dax * bd) / d;
         out[1] = (ad * dby - day * bd) / d;
 
-        if in_rect(out, a1, a2) && in_rect(out, b1, b2) {
+        if point_in_rect(out, a1, a2) && point_in_rect(out, b1, b2) {
             true
         } else {
             false
@@ -41,26 +41,26 @@ where
 fn test_line_intersection() {
     let mut out = [0.0, 0.0];
     assert!(line_intersection(
+        &mut out,
         &[0.0, 0.0],
         &[1.0, 1.0],
         &[1.0, 0.0],
         &[0.0, 1.0],
-        &mut out
     ));
     assert_eq!(out, [0.5, 0.5]);
 
     assert!(!line_intersection(
+        &mut [0.0, 0.0],
         &[1.0, 0.0],
         &[1.0, 1.0],
         &[-1.0, 0.0],
         &[-1.0, 1.0],
-        &mut [0.0, 0.0]
     ));
     assert!(!line_intersection(
+        &mut [0.0, 0.0],
         &[0.0, 0.0],
         &[1.0, 1.0],
         &[2.0, 0.0],
         &[2.0, 1.0],
-        &mut [0.0, 0.0]
     ));
 }

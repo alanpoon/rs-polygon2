@@ -1,6 +1,6 @@
 [package]
 name = "polygon2"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["nathanfaucett <nathanfaucett@gmail.com>"]
 
 keywords = ["polygon2", "polygon", "2d"]

@@ -8,17 +8,17 @@ where
     T: Copy + Num + Sqrt,
 {
     let mut intersection = Intersection::new();
-    point_to_line_intersection(p, a, b, 0, &mut intersection);
+    point_to_line_intersection(&mut intersection, p, a, b, 0);
     intersection.distance
 }
 
 #[inline]
 pub fn point_to_line_intersection<T>(
+    intersection: &mut Intersection<T>,
     p: &[T; 2],
     a: &[T; 2],
     b: &[T; 2],
     edge: usize,
-    intersection: &mut Intersection<T>,
 ) where
     T: Copy + Num + Sqrt,
 {

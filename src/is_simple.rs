@@ -5,7 +5,7 @@ use super::line_intersection;
 #[inline]
 pub fn is_simple<T>(points: &[[T; 2]]) -> bool
 where
-    T: Copy + Num + ::core::fmt::Debug,
+    T: Copy + Num,
 {
     let n = points.len();
 
@@ -50,7 +50,7 @@ where
                 b2[0] = pb2[0];
                 b2[1] = pb2[1];
 
-                if line_intersection(&a1, &a2, &b1, &b2, &mut c) {
+                if line_intersection(&mut c, &a1, &a2, &b1, &b2) {
                     return false;
                 }
             }
