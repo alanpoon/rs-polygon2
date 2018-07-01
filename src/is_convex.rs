@@ -1,9 +1,9 @@
-use number_traits::Num;
+use num_traits::Signed;
 
 #[inline]
 pub fn is_convex<T>(points: &[[T; 2]]) -> bool
 where
-    T: Copy + Num,
+    T: Copy + Signed + PartialOrd,
 {
     let n = points.len();
     if n < 3 {
@@ -43,7 +43,7 @@ fn test_is_convex() {
 #[inline]
 pub fn is_triangle_convex<T>(a: &[T; 2], b: &[T; 2], c: &[T; 2]) -> bool
 where
-    T: Copy + Num,
+    T: Copy + Signed + PartialOrd,
 {
     ((a[1] - b[1]) * (c[0] - b[0]) + (b[0] - a[0]) * (c[1] - b[1])) >= T::zero()
 }

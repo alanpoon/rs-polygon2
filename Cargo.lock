@@ -1,43 +1,42 @@
 [[package]]
-name = "libc"
-version = "0.2.36"
+name = "cast_trait"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "number_traits"
-version = "0.2.2"
+name = "num-traits"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "libc 0.2.36 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
 [[package]]
 name = "polygon2"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
- "number_traits 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "vec2 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "vec2 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "vec2"
-version = "0.1.4"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "number_traits 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "vec3 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "cast_trait 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "vec3 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "vec3"
-version = "0.1.5"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "number_traits 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "cast_trait 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [metadata]
-"checksum libc 0.2.36 (registry+https://github.com/rust-lang/crates.io-index)" = "1e5d97d6708edaa407429faa671b942dc0f2727222fb6b6539bf1db936e4b121"
-"checksum number_traits 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "77e50ec17da6016f2dd3a69dac7da6ad302ec3b86f5f9f4279f3fc8ca40c0869"
-"checksum vec2 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)" = "f5aa92585e65e54a1a8852d288250b227d548921a03aafc263ecc627ea852207"
-"checksum vec3 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "d021950d17a0323b031b871b41aa64b74d4562da55d3953a34ddbe4cb24131b4"
+"checksum cast_trait 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "c4f8d981c476baadf74cd52897866a1d279d3e14e2d5e2d9af045210e0ae6128"
+"checksum num-traits 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)" = "630de1ef5cc79d0cdd78b7e33b81f083cbfe90de0f4b2b2f07f905867c70e9fe"
+"checksum vec2 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d2737add76d35a0c7c2dcffb19a98944628b73469361d2b111a00230960610da"
+"checksum vec3 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "214468db4daf1713feeba464c9fb164a0882033322d0abc4e2cd7cb2c7c7f56b"

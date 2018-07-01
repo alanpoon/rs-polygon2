@@ -1,17 +1,23 @@
+use core::ops::{Add, Div, Mul, Sub};
+
+use num_traits::{Bounded, Float};
 use vec2;
-use number_traits::{Num, Sqrt, Trig};
 
 use super::{point_to_line_intersection, Intersection};
 
 #[inline]
 pub fn closest_edge<T>(points: &[[T; 2]], p: &[T; 2]) -> Intersection<T>
 where
-    T: Copy + Num + Sqrt,
+    T: Clone + Float + Bounded + PartialOrd,
+    for<'a, 'b> &'a T: Div<&'b T, Output = T>
+        + Sub<&'b T, Output = T>
+        + Add<&'b T, Output = T>
+        + Mul<&'b T, Output = T>,
 {
     let n = points.len();
     let n_minus_1 = n - 1;
-    let px = p[0];
-    let py = p[1];
+    let px = p[0].clone();
+    let py = p[1].clone();
 
     let mut intersection = Intersection::new();
 
@@ -29,9 +35,9 @@ where
         i += 1;
     }
 
-    if intersection.distance != T::zero() {
-        intersection.normal[0] = (px - intersection.point[0]) / intersection.distance;
-        intersection.normal[1] = (py - intersection.point[1]) / intersection.distance;
+    if &intersection.distance != &T::zero() {
+        intersection.normal[0] = &(&px - &intersection.point[0]) / &intersection.distance;
+        intersection.normal[1] = &(&py - &intersection.point[1]) / &intersection.distance;
     } else {
         intersection.normal[0] = T::zero();
         intersection.normal[1] = T::one();
@@ -77,7 +83,11 @@ pub fn closest_edge_offset_angle<T>(
     p: &[T; 2],
 ) -> Intersection<T>
 where
-    T: Copy + Num + Trig + Sqrt,
+    T: Clone + Float + Bounded + PartialOrd,
+    for<'a, 'b> &'a T: Div<&'b T, Output = T>
+        + Sub<&'b T, Output = T>
+        + Add<&'b T, Output = T>
+        + Mul<&'b T, Output = T>,
 {
     let n = points.len();
     let n_minus_1 = n - 1;
@@ -103,12 +113,12 @@ where
 
         tmp1[0] = p1[0];
         tmp1[1] = p1[1];
-        vec2::transform_angle(&mut tmp2, &tmp1, angle);
+        vec2::transform_angle(&mut tmp2, &tmp1, &angle);
         vec2::add(&mut b1, offset, &tmp2);
 
         tmp1[0] = p2[0];
         tmp1[1] = p2[1];
-        vec2::transform_angle(&mut tmp2, &tmp1, angle);
+        vec2::transform_angle(&mut tmp2, &tmp1, &angle);
         vec2::add(&mut b2, offset, &tmp2);
 
         point_to_line_intersection(&mut intersection, p, &b1, &b2, i);

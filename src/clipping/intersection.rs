@@ -1,13 +1,18 @@
 use alloc::vec::Vec;
+use core::ops::{Add, Div, Mul, Sub};
 
-use number_traits::Signed;
+use num_traits::Signed;
 
 use super::greiner_hormann::Polygon;
 
 #[inline]
 pub fn intersection<T>(subject: &[[T; 2]], clip: &[[T; 2]]) -> Vec<Vec<[T; 2]>>
 where
-    T: Copy + Signed,
+    T: Clone + Signed + PartialEq + PartialOrd,
+    for<'a, 'b> &'a T: Div<&'b T, Output = T>
+        + Sub<&'b T, Output = T>
+        + Add<&'b T, Output = T>
+        + Mul<&'b T, Output = T>,
 {
     let mut subject_polygon = Polygon::from(subject);
     let mut clip_polygon = Polygon::from(clip);

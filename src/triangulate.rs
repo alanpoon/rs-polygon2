@@ -1,13 +1,13 @@
 use alloc::vec::Vec;
 
-use number_traits::Num;
+use num_traits::Signed;
 
 use super::{is_triangle_convex, point_in_triangle};
 
 #[inline]
 pub fn triangulate<T>(points: &[[T; 2]]) -> Vec<usize>
 where
-    T: Copy + Num,
+    T: Copy + Signed + PartialOrd,
 {
     let len = points.len();
     let mut tgs = Vec::new();

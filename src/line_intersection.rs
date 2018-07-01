@@ -1,4 +1,5 @@
-use number_traits::Num;
+use core::ops::{Div, Mul, Sub};
+use num_traits::Signed;
 
 use super::point_in_rect;
 
@@ -11,23 +12,23 @@ pub fn line_intersection<T>(
     b2: &[T; 2],
 ) -> bool
 where
-    T: Copy + Num,
+    T: Clone + Signed + PartialEq + PartialOrd,
+    for<'a, 'b> &'a T: Div<&'b T, Output = T> + Sub<&'b T, Output = T> + Mul<&'b T, Output = T>,
 {
-    let dax = a1[0] - a2[0];
-    let dbx = b1[0] - b2[0];
-    let day = a1[1] - a2[1];
-    let dby = b1[1] - b2[1];
+    let dax = &a1[0] - &a2[0];
+    let dbx = &b1[0] - &b2[0];
+    let day = &a1[1] - &a2[1];
+    let dby = &b1[1] - &b2[1];
 
-    let d = dax * dby - day * dbx;
-    if d == T::zero() {
-        // parallel
+    let d = &(&dax * &dby) - &(&day * &dbx);
+    if &d == &T::zero() {
         false
     } else {
-        let ad = a1[0] * a2[1] - a1[1] * a2[0];
-        let bd = b1[0] * b2[1] - b1[1] * b2[0];
+        let ad = &(&a1[0] * &a2[1]) - &(&a1[1] * &a2[0]);
+        let bd = &(&b1[0] * &b2[1]) - &(&b1[1] * &b2[0]);
 
-        out[0] = (ad * dbx - dax * bd) / d;
-        out[1] = (ad * dby - day * bd) / d;
+        out[0] = &(&(&ad * &dbx) - &(&dax * &bd)) / &d;
+        out[1] = &(&(&ad * &dby) - &(&day * &bd)) / &d;
 
         if point_in_rect(out, a1, a2) && point_in_rect(out, b1, b2) {
             true

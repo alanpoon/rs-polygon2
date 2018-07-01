@@ -3,11 +3,11 @@
 
 extern crate alloc;
 
-extern crate number_traits;
+extern crate num_traits;
 extern crate vec2;
 
-mod clipping;
 mod area;
+mod clipping;
 mod closest_edge;
 mod contains_point;
 mod intersection;
@@ -19,8 +19,8 @@ mod point_in_triangle;
 mod point_to_line_distance;
 mod triangulate;
 
-pub use self::clipping::{difference, greiner_hormann, intersection, union};
 pub use self::area::area;
+pub use self::clipping::{difference, greiner_hormann, intersection, union};
 pub use self::closest_edge::{closest_edge, closest_edge_offset_angle};
 pub use self::contains_point::contains_point;
 pub use self::intersection::Intersection;

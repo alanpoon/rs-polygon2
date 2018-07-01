@@ -1,9 +1,9 @@
-use number_traits::Num;
+use num_traits::Signed;
 
 #[inline]
 pub fn point_in_triangle<T>(p: &[T; 2], a: &[T; 2], b: &[T; 2], c: &[T; 2]) -> bool
 where
-    T: Copy + Num,
+    T: Copy + Signed + PartialOrd,
 {
     let v0x = c[0] - a[0];
     let v0y = c[1] - a[1];

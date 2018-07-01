@@ -1,14 +1,12 @@
 use alloc::boxed::Box;
+use core::ops::{Add, Div, Mul, Sub};
 use core::ptr;
 
-use number_traits::Signed;
+use num_traits::Signed;
 
 use super::Polygon;
 
-pub struct Vertex<T>
-where
-    T: Copy + Signed,
-{
+pub struct Vertex<T> {
     pub point: [T; 2],
     pub next: *mut Vertex<T>,
     pub prev: *mut Vertex<T>,
@@ -19,10 +17,7 @@ where
     pub checked: bool,
 }
 
-impl<T> Vertex<T>
-where
-    T: Copy + Signed,
-{
+impl<T> Vertex<T> {
     #[inline]
     pub(super) fn new(
         point: [T; 2],
@@ -49,13 +44,22 @@ where
 
         ptr
     }
+}
 
+impl<T> Vertex<T>
+where
+    T: Clone + Signed + PartialEq + PartialOrd,
+    for<'a, 'b> &'a T: Div<&'b T, Output = T>
+        + Add<&'b T, Output = T>
+        + Sub<&'b T, Output = T>
+        + Mul<&'b T, Output = T>,
+{
     #[inline]
     pub fn clone(vertex: *mut Vertex<T>) -> *mut Self {
         unsafe {
             Self::new(
-                vertex.as_ref().unwrap().point,
-                vertex.as_ref().unwrap().alpha,
+                vertex.as_ref().unwrap().point.clone(),
+                vertex.as_ref().unwrap().alpha.clone(),
                 vertex.as_ref().unwrap().inter,
                 vertex.as_ref().unwrap().entry,
                 vertex.as_ref().unwrap().checked,
@@ -67,8 +71,8 @@ where
     #[inline]
     pub fn is_inside(&self, polygon: &Polygon<T>) -> bool {
         let mut odd_nodes = false;
-        let x = self.point[0];
-        let y = self.point[1];
+        let x = &self.point[0];
+        let y = &self.point[1];
 
         for vertex in polygon.iter() {
             let vertex_point = unsafe { &vertex.as_ref().unwrap().point };
@@ -80,13 +84,14 @@ where
                     .point
             };
 
-            if (vertex_point[1] < y && next_point[1] >= y
-                || next_point[1] < y && vertex_point[1] >= y)
-                && (vertex_point[0] <= x || next_point[0] <= x)
+            if (&vertex_point[1] < y && &next_point[1] >= y
+                || &next_point[1] < y && &vertex_point[1] >= y)
+                && (&vertex_point[0] <= x || &next_point[0] <= x)
             {
-                odd_nodes ^= vertex_point[0]
-                    + (y - vertex_point[1]) / (next_point[1] - vertex_point[1])
-                        * (next_point[0] - vertex_point[0]) < x;
+                let a = &vertex_point[0]
+                    + &(&(&(y - &vertex_point[1]) / &(&next_point[1] - &vertex_point[1]))
+                        * &(&next_point[0] - &vertex_point[0]));
+                odd_nodes ^= &a < x;
             }
         }
 

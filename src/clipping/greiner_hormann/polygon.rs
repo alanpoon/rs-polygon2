@@ -1,28 +1,30 @@
-use alloc::vec::Vec;
 use alloc::boxed::Box;
+use alloc::vec::Vec;
+use core::ops::{Add, Div, Mul, Sub};
 use core::{fmt, ptr};
 
-use number_traits::Signed;
+use num_traits::{Signed, Zero};
 
 use super::{intersect, Vertex};
 
-pub struct Polygon<T>
-where
-    T: Copy + Signed,
-{
+pub struct Polygon<T> {
     first: *mut Vertex<T>,
 }
 
-impl<'a, T> From<&'a [[T; 2]]> for Polygon<T>
+impl<'slice, T> From<&'slice [[T; 2]]> for Polygon<T>
 where
-    T: 'a + Copy + Signed,
+    T: Clone + Zero + Signed + PartialEq + PartialOrd,
+    for<'a, 'b> &'a T: Div<&'b T, Output = T>
+        + Sub<&'b T, Output = T>
+        + Add<&'b T, Output = T>
+        + Mul<&'b T, Output = T>,
 {
     #[inline]
-    fn from(slice: &'a [[T; 2]]) -> Self {
+    fn from(slice: &'slice [[T; 2]]) -> Self {
         let mut polygon = Self::new();
 
         for v in slice {
-            let vertex = Vertex::new(*v, T::zero(), false, true, false);
+            let vertex = Vertex::new(v.clone(), T::zero(), false, true, false);
             polygon.add(vertex);
         }
 
@@ -32,7 +34,7 @@ where
 
 impl<T> fmt::Debug for Polygon<T>
 where
-    T: Copy + Signed + fmt::Debug,
+    T: fmt::Debug,
 {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -40,28 +42,36 @@ where
             f,
             "Polygon {:?}",
             self.iter()
-                .map(|v| unsafe { v.as_ref().unwrap().point })
-                .collect::<Vec<[T; 2]>>()
+                .map(|v| unsafe { &v.as_ref().unwrap().point })
+                .collect::<Vec<&[T; 2]>>()
         )
     }
 }
 
-impl<T> Polygon<T>
-where
-    T: Copy + Signed,
-{
+impl<T> Polygon<T> {
     #[inline]
     pub fn new() -> Self {
         Self {
             first: ptr::null_mut(),
         }
     }
+}
 
+impl<T> Polygon<T> {
     #[inline]
     pub fn iter(&self) -> PolygonIter<T> {
         PolygonIter::new(self)
     }
+}
 
+impl<T> Polygon<T>
+where
+    T: Clone + Signed + PartialEq + PartialOrd,
+    for<'a, 'b> &'a T: Div<&'b T, Output = T>
+        + Sub<&'b T, Output = T>
+        + Add<&'b T, Output = T>
+        + Mul<&'b T, Output = T>,
+{
     #[inline]
     pub fn add(&mut self, vertex: *mut Vertex<T>) {
         if self.first.is_null() {
@@ -192,7 +202,8 @@ where
 
                             match intersect(s_point, s_next_point, c_point, c_next_point) {
                                 Some((i, alpha_s, alpha_c)) => {
-                                    let mut is = Vertex::new(i, alpha_s, true, false, false);
+                                    let mut is =
+                                        Vertex::new(i.clone(), alpha_s, true, false, false);
                                     let mut ic = Vertex::new(i, alpha_c, true, false, false);
                                     is.as_mut().unwrap().neighbour = ic;
                                     ic.as_mut().unwrap().neighbour = is;
@@ -322,10 +333,7 @@ where
     }
 }
 
-impl<T> Drop for Polygon<T>
-where
-    T: Copy + Signed,
-{
+impl<T> Drop for Polygon<T> {
     #[inline]
     fn drop(&mut self) {
         let mut current = self.first;
@@ -347,19 +355,13 @@ where
     }
 }
 
-pub struct PolygonIter<T>
-where
-    T: Copy + Signed,
-{
+pub struct PolygonIter<T> {
     first: *mut Vertex<T>,
     current: *mut Vertex<T>,
     is_first: bool,
 }
 
-impl<T> PolygonIter<T>
-where
-    T: Copy + Signed,
-{
+impl<T> PolygonIter<T> {
     #[inline(always)]
     fn new(polygon: &Polygon<T>) -> Self {
         Self {
@@ -370,10 +372,7 @@ where
     }
 }
 
-impl<T> Iterator for PolygonIter<T>
-where
-    T: Copy + Signed,
-{
+impl<T> Iterator for PolygonIter<T> {
     type Item = *mut Vertex<T>;
 
     #[inline]
@@ -403,10 +402,7 @@ where
     }
 }
 
-impl<T> DoubleEndedIterator for PolygonIter<T>
-where
-    T: Copy + Signed,
-{
+impl<T> DoubleEndedIterator for PolygonIter<T> {
     #[inline]
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.is_first {
