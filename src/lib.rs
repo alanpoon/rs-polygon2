@@ -1,8 +1,3 @@
-#![feature(alloc)]
-#![no_std]
-
-extern crate alloc;
-
 extern crate num_traits;
 extern crate vec2;
 

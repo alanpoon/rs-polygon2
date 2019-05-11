@@ -1,4 +1,4 @@
-use core::ops::{Div, Mul, Sub};
+use std::ops::{Div, Mul, Sub};
 use num_traits::Signed;
 
 use super::point_in_rect;

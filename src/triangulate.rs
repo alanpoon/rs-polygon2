@@ -1,5 +1,3 @@
-use alloc::vec::Vec;
-
 use num_traits::Signed;
 
 use super::{is_triangle_convex, point_in_triangle};
